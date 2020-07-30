@@ -1,6 +1,6 @@
 "use strict";
 
-const TASKCOUNT = 3;
+const TASK_COUNT = 3;
 
 const createSiteMenuTemplate = () => {
   return (
@@ -97,7 +97,7 @@ const createSiteFilterTemplate = () => {
     </section>`
   );
 };
-const createSiteSortingTemplate = () => {
+const createSiteBoardTemplate = () => {
   return (
     `<section class="board container">
       <div class="board__filter-list">
@@ -360,14 +360,15 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 render(siteHeaderElement, createSiteMenuTemplate(), `beforeend`);
 render(siteMainElement, createSiteFilterTemplate(), `beforeend`);
-render(siteMainElement, createSiteSortingTemplate(), `beforeend`);
+render(siteMainElement, createSiteBoardTemplate(), `beforeend`);
 
-const taskListElement = document.querySelector(`.board__tasks`);
+const taskListElement = siteMainElement.querySelector(`.board__tasks`);
+const siteBoardContainer = siteMainElement.querySelector(`.board`);
 
 render(taskListElement, createTaskEditTemplate(), `beforeend`);
 
-for (let i = 0; i < TASKCOUNT; i++) {
+for (let i = 0; i < TASK_COUNT; i++) {
   render(taskListElement, createSiteTaskTemplate(), `beforeend`);
 }
 
-render(taskListElement, createLoadMoreSiteButtonTemplate(), `beforeend`);
+render(siteBoardContainer, createLoadMoreSiteButtonTemplate(), `beforeend`);
