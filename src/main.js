@@ -346,7 +346,7 @@ const createTaskEditTemplate = () => {
     </article>`
   );
 };
-const createLoadMoreSiteButtonTemplate = () => {
+const createLoadMoreButtonTemplate = () => {
   return (
     `<button class="load-more" type="button">load more</button>`
   );
@@ -371,4 +371,4 @@ for (let i = 0; i < TASK_COUNT; i++) {
   render(taskListElement, createSiteTaskTemplate(), `beforeend`);
 }
 
-render(siteBoardContainer, createLoadMoreSiteButtonTemplate(), `beforeend`);
+render(siteBoardContainer, createLoadMoreButtonTemplate(), `beforeend`);
