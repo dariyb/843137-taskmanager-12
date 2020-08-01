@@ -7,5 +7,9 @@ module.exports = {
     filename: `bundle.js`,
     path: path.join(__dirname, `public`),
   },
-  devtool: `soutce-map`
+  devtool: `soutce-map`,
+  devServer: {
+    contentBase: path.join(__dirname, `public`),
+    watchContentBase: true,
+  }
 };
