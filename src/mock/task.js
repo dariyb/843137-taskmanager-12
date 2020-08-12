@@ -15,7 +15,6 @@ const generateDescription = () => {
 };
 
 const generateDate = () => {
-  // ноль-ложь,один-истина
   const isDate = Boolean(getRandomNumber(0, 1));
 
   if (!isDate) {
