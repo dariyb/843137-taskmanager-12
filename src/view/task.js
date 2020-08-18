@@ -1,4 +1,5 @@
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate, createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
 
 const createSiteTaskTemplate = (task) => {
   const {color, description, dueDate, repeating, isFavorite, isArchive} = task;
@@ -64,21 +65,22 @@ const createSiteTaskTemplate = (task) => {
     </article>`;
 };
 
-export default class Task {
+export default class Task extends AbstractView {
   constructor(task) {
+    super();
     this._task = task;
-    this._element = null;
+
+    this._onEditButton = this._onEditButton.bind(this);
   }
   getTemplate() {
     return createSiteTaskTemplate(this._task);
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _onEditButton(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
-  removeElement() {
-    this._element = null;
+  onEditButtonClick(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButton);
   }
 }
