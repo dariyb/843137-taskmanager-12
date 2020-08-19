@@ -25,7 +25,7 @@ export default class Board {
     this._loadMoreButtonComponent = new LoadMoreButtonView();
 
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
-    this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this._onSortTypeChangeClick = this._onSortTypeChangeClick.bind(this);
   }
 
   init(boardTasks) {
@@ -42,7 +42,7 @@ export default class Board {
       case SortType.DATE_UP:
         this._boardTasks.sort(sortTaskUp);
         break;
-      case sortType.DATE_DOWN:
+      case SortType.DATE_DOWN:
         this._boardTasks.sort(sortTaskDown);
         break;
       default:
@@ -51,7 +51,7 @@ export default class Board {
     this._currentSortType = sortType;
   }
 
-  _onSortTypeChange(sortType) {
+  _onSortTypeChangeClick(sortType) {
     if (this._currentSortType === sortType) {
       return;
     }
@@ -62,7 +62,7 @@ export default class Board {
 
   _renderSort() {
     render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
-    this._sortComponent.onSortTypeChangeClick(this._onSortTypeChange);
+    this._sortComponent.onSortTypeClick(this._onSortTypeChangeClick);
   }
 
   _renderTask(task) {
@@ -118,12 +118,12 @@ export default class Board {
 
   _renderLoadMoreButton() {
     render(this._boardComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
-
     this._loadMoreButtonComponent.onClick(this._onLoadMoreButtonClick);
   }
+
   _clearTaskList() {
     this._taskListComponent.getElement().innerHTML = ``;
-    this.__renderTemplateedTaskCount = TASK_COUNT_PER_STEP;
+    this._renderTemplateedTaskCount = TASK_COUNT_PER_STEP;
   }
 
   _renderTaskList() {
