@@ -71,6 +71,8 @@ export default class Task extends AbstractView {
     this._task = task;
 
     this._onEditButton = this._onEditButton.bind(this);
+    this._onFavoriteButton = this._onFavoriteButton.bind(this);
+    this._onArchiveButton = this._onArchiveButton.bind(this);
   }
   getTemplate() {
     return createSiteTaskTemplate(this._task);
@@ -79,8 +81,24 @@ export default class Task extends AbstractView {
     evt.preventDefault();
     this._callback.editClick();
   }
+  _onFavoriteButton(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+  _onArchiveButton(evt) {
+    evt.preventDefault();
+    this._callback.archiveClick();
+  }
   onEditButtonClick(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButton);
+  }
+  onFavoriteButtonClick(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, this._onFavoriteButton);
+  }
+  onArchiveButtonClick(callback) {
+    this._callback.archiveClick = callback;
+    this.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, this._onArchiveButton);
   }
 }
