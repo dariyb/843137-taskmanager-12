@@ -164,21 +164,17 @@ export default class TaskEdit extends SmartView {
   }
   _setDatepicker() {
     if (this._datepicker) {
-      // В случае обновления компонента удаляем вспомогательные DOM-элементы,
-      // которые создает flatpickr при инициализации
       this._datepicker.destroy();
       this._datepicker = null;
     }
 
     if (this._data.isDueDate) {
-      // flatpickr есть смысл инициализировать только в случае,
-      // если поле выбора даты доступно для заполнения
       this._datepicker = flatpickr(
           this.getElement().querySelector(`.card__date`),
           {
             dateFormat: `j F`,
             defaultDate: this._data.dueDate,
-            onChange: this._dueDateChangeHandler // На событие flatpickr передаём наш колбэк
+            onChange: this._dueDateChangeHandler
           }
       );
     }
@@ -226,10 +222,6 @@ export default class TaskEdit extends SmartView {
     }, true);
   }
   _dueDateChangeHandler([userDate]) {
-    // По заданию дедлайн у задачи устанавливается без учёта времеми,
-    // но объект даты без времени завести нельзя,
-    // поэтому будем считать срок у всех задач -
-    // это 23:59:59 установленной даты
     userDate.setHours(23, 59, 59, 999);
 
     this.updateData({
