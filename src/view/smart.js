@@ -32,7 +32,6 @@ export default class Smart extends Abstract {
     this.onRestore();
   }
   onRestore() {
-    this._onInnerClick();
-    this.onFormSubmitClick(this._callback.formSubmit);
+    throw new Error(`Abstract method not implemented: resetHandlers`);
   }
 }
