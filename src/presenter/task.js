@@ -1,6 +1,8 @@
 import TaskView from "../view/task.js";
 import TaskEditView from "../view/task-edit.js";
 import {render, RenderPosition, replace, remove} from "../utils/render.js";
+import {UserAction, UpdateType} from "../const.js";
+import {isTaskRepeating, isDatesEqual} from "../utils/task.js";
 
 const ESC_KEYCODE = 27;
 const Mode = {
@@ -22,6 +24,7 @@ export default class Task {
     this._onFavoriteClick = this._onFavoriteClick.bind(this);
     this._onArchiveClick = this._onArchiveClick.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
+    this._onDeleteClick = this._onDeleteClick.bind(this);
     this._onEscPress = this._onEscPress.bind(this);
   }
   init(task) {
@@ -37,6 +40,7 @@ export default class Task {
     this._taskComponent.onFavoriteButtonClick(this._onFavoriteClick);
     this._taskComponent.onArchiveButtonClick(this._onArchiveClick);
     this._taskEditComponent.onFormSubmitClick(this._onFormSubmit);
+    this._taskEditComponent.onDeleteClick(this._onDeleteClick);
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
       render(this._taskListContainer, this._taskComponent, RenderPosition.BEFOREEND);
@@ -87,6 +91,8 @@ export default class Task {
   }
   _onFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_TASK,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._task,
@@ -98,6 +104,8 @@ export default class Task {
   }
   _onArchiveClick() {
     this._changeData(
+        UserAction.UPDATE_TASK,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._task,
@@ -107,8 +115,22 @@ export default class Task {
         )
     );
   }
-  _onFormSubmit(task) {
-    this._changeData(task);
+  _onFormSubmit(update) {
+    const isMinorUpdate =
+    !isDatesEqual(this._task.dueDate, update.dueDate) ||
+    isTaskRepeating(this._task.repeating) !== isTaskRepeating(update.repeating);
+    this._changeData(
+        UserAction.UPDATE_TASK,
+        isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+        update
+    );
     this._replaceFormToCard();
+  }
+  _onDeleteClick(task) {
+    this._changeData(
+        UserAction.DELETE_TASK,
+        UpdateType.MINOR,
+        task
+    );
   }
 }

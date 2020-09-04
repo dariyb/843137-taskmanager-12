@@ -1,3 +1,4 @@
+import he from "he";
 import SmartView from "./smart.js";
 import {COLORS} from "../const.js";
 import {isTaskRepeating, formatTaskDueDate} from "../utils/task.js";
@@ -106,7 +107,7 @@ const createTaskEditTemplate = (data) => {
                 class="card__text"
                 placeholder="Start typing your text here..."
                 name="text"
-              >${description}</textarea>
+              >${he.encode(description)}</textarea>
             </label>
           </div>
           <div class="card__settings">
@@ -139,6 +140,7 @@ export default class TaskEdit extends SmartView {
     this._datepicker = null;
 
     this._onFormSubmit = this._onFormSubmit.bind(this);
+    this._onFormDelete = this._onFormDelete.bind(this);
     this._onDescriptionInputChange = this._onDescriptionInputChange.bind(this);
     this._onDueDateToggle = this._onDueDateToggle.bind(this);
     this._dueDateChangeHandler = this._dueDateChangeHandler.bind(this);
@@ -148,6 +150,14 @@ export default class TaskEdit extends SmartView {
 
     this._onInnerClick();
     this._setDatepicker();
+  }
+  removeElement() {
+    super.removeElement();
+
+    if (this._datepicker) {
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
   }
   reset(task) {
     this.updateData(
@@ -161,6 +171,7 @@ export default class TaskEdit extends SmartView {
     this._onInnerClick();
     this._setDatepicker();
     this.onFormSubmitClick(this._callback.formSubmit);
+    this.onDeleteClick(this._callback.deleteClick);
   }
   _setDatepicker() {
     if (this._datepicker) {
@@ -251,6 +262,14 @@ export default class TaskEdit extends SmartView {
   onFormSubmitClick(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector(`form`).addEventListener(`submit`, this._onFormSubmit);
+  }
+  _onFormDelete(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(TaskEdit.parseDataToTask(this._data));
+  }
+  onDeleteClick(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.card__delete`).addEventListener(`click`, this._onFormDelete);
   }
   static parseTaskToData(task) {
     return Object.assign(
