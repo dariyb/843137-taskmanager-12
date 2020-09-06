@@ -16,12 +16,12 @@ const createSiteTaskTemplate = (task) => {
     : ``;
 
   const favoriteClassName = isFavorite
-    ? `card__btn--favorites card__btn--disabled`
-    : `card__btn--favorites`;
+    ? `card__btn--favorites`
+    : `card__btn--favorites card__btn--disabled`;
 
   const archiveClassName = isArchive
-    ? `card__btn--archive card__btn--disabled`
-    : `card__btn--archive`;
+    ? `card__btn--archive`
+    : `card__btn--archive card__btn--disabled`;
 
   return `<article class="card card--${color} ${deadlineClassName} ${repeatingClassName}">
       <div class="card__form">

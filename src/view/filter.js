@@ -44,7 +44,7 @@ export default class Filter extends AbstractView {
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.value);
   }
-  onFilterTypeChange(callback) {
+  onFilterChangeType(callback) {
     this._callback.filterTypeChange = callback;
     this.getElement().addEventListener(`change`, this._onFilterTypeChange);
   }
